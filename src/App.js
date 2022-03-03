@@ -18,7 +18,8 @@ function App() {
     try {
       let response = await fetch(url);
       let data = await response.json();
-      console.log(data);
+      setPhotos(data);
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -29,10 +30,38 @@ function App() {
     fetchImages();
   }, []);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("hello");
+  };
+
   return (
-    <div className="App">
-      <h1>Stock photos starter!</h1>
-    </div>
+    <main>
+      <section className="search">
+        <form className="search-form">
+          <input
+            type="text"
+            className="form-input"
+            placeholder="search"
+          />
+          <button
+            className="submit-btn"
+            onClick={handleSubmit}
+            type="submit"
+          >
+            <FaSearch />
+          </button>
+        </form>
+      </section>
+      <section className="photos">
+        <div className="photos-center">
+          {photos.map((image) => {
+            return <Photo key={image.id} {...image} />;
+          })}
+        </div>
+        {loading && <h2 className="loading">Loading....</h2>}
+      </section>
+    </main>
   );
 }
 
